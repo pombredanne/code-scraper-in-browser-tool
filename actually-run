@@ -2,13 +2,24 @@
 
 # Called from enrunerate, which does the process handling part
 
-echo '*** Love playing with data? ScraperWiki is hiring: https://blog.scraperwiki.com/jobs/swjob10/ ***'
-echo
+# echo '*** Software Engineer? We''re hiring at ScraperWiki! https://blog.scraperwiki.com/jobs/data-engineer-liverpool-25k-to-35k/ ***'
+# echo
 
 echo 'Started run:' `date --rfc-3339=seconds`
 
-./code/scraper
+# kill after 1 hour
+timeout --kill-after=1m 1h ./code/scraper
 ERR=$?
+
+# GNU timeout is documented as returning 124 on a timeout
+if [ "$ERR" == "124" ]
+then
+  echo "Run stopped by ScraperWiki, taking more than 1 hour"
+# 137 = 128 + 9 which is what timeout returns on catching a SIGKILL
+elif [ "$ERR" == "137" ]
+then
+  echo "Run killed by ScraperWiki, taking more than 1 hour, and wouldn't exit upon request"
+fi
 
 if [ "$ERR" == "0" ]
 then

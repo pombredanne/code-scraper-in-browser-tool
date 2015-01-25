@@ -1,4 +1,4 @@
-// Source code repository: https://github.com/frabcus/code-scraper-in-browser-tool/
+// Source code repository: https://github.com/scraperwiki/code-scraper-in-browser-tool/
 
 var settings
 var editor
@@ -89,7 +89,7 @@ var do_language_cancelled = function() {
 var set_loaded_data = function(data) {
   clear_alerts()
   set_editor_mode(data)
-  editor.setValue(data)
+  editor.getSession().setValue(data)
   update_dirty(false)
   done_initial_load()
 }
@@ -388,12 +388,12 @@ var save_code = function(callback) {
 
 // When the "bugs" button is pressed
 var do_bugs = function() {
-  window.open("https://github.com/frabcus/code-scraper-in-browser-tool/issues", "_blank")
+  window.open("https://github.com/scraperwiki/code-scraper-in-browser-tool/issues", "_blank")
 }
 
 // When the "run" button is pressed
 var do_run = function() {
-  // see https://github.com/frabcus/code-scraper-in-browser-tool/issues/55
+  // see https://github.com/scraperwiki/code-scraper-in-browser-tool/issues/55
   editor.focus()
   // force a check that we have a shebang (#!) line
   clear_alerts()
@@ -463,7 +463,7 @@ $(document).ready(function() {
   // Fill in the language picker
   $.each(languages, function(ix, lang) {
     var cls = "secondary collapse out"
-    if (lang.primary) {
+    if ('primary' in lang && lang.primary == true) {
       cls = ""
     }
     $("#languagepicker ul").append('<li class="' + cls + '"><a href="#' + lang.binary + '">' + lang.human + ' <span style="display: none" class="pull-right muted">#! ' + lang.binary + '</span></a></li>')
@@ -485,7 +485,7 @@ $(document).ready(function() {
       do_run()
       e.preventDefault()
     }
-    // eat ctrl+s for save (see https://github.com/frabcus/code-scraper-in-browser-tool/issues/56)
+    // eat ctrl+s for save (see https://github.com/scraperwiki/code-scraper-in-browser-tool/issues/56)
     if ((e.ctrlKey || e.metaKey) && e.which==83) {
       e.preventDefault()
     }
